@@ -21,8 +21,7 @@ void GridPoint::toggle() {
 }
 
 GridPoint::GridPoint() {
-	x = y = 0;
-	state = false;
+	state = GridPoint::STATE_OFF;
 }
 
 GridPoint::GridPoint(bool _state, int _x, int _y) {
@@ -30,3 +29,5 @@ GridPoint::GridPoint(bool _state, int _x, int _y) {
 	y = _y;
 	state = _state;
 }
+
+

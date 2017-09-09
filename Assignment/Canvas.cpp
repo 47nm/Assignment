@@ -9,6 +9,7 @@ Canvas::Canvas()
 : _width(0)
 , _height(0)
 {
+	mouseClickState = GLUT_UP;
 }
 
 Canvas::~Canvas()
@@ -65,6 +66,14 @@ void Canvas::drawGrid() {
 	}
 
 }
+void Canvas::drawLine() {
+	glColor3ub(0, 127, 0);
+	glBegin(GL_LINES);
+	glVertex2i(line.start.x, _height - line.start.y);
+	glVertex2i(line.end.x, _height - line.end.y);
+	glEnd();
+
+}
 void Canvas::initGrid(int dots) {
 	Color colorForOff(127, 127, 127);
 	Color colorForOn(0, 0, 127);
@@ -95,6 +104,16 @@ void Canvas::reshapeGrid(GLuint width, GLuint height) {
 		GridPoint(GridPoint::STATE_OFF, width, height));
 	squareGrid.notifyObservers();
 }
+void Canvas::onMouseDrag(int x, int y)
+{
+	if (mouseClickState == GLUT_DOWN)
+	{
+		line.end.x = x;
+		line.end.y = y;
+		refresh();
+	}
+	//cout << mouseClickState << "\n";
+}
 Canvas& Canvas::GetInstance()
 {
     return *_instance.get();
@@ -120,6 +139,11 @@ void MouseFunc(int button, int state, int x, int y)
 {
     Canvas::GetInstance().onMouseButton(button, state, x, y);
 }
+void MouseDrag(int x, int y)
+{
+	Canvas::GetInstance().onMouseDrag(x, y);
+}
+
 
 void KeyboardFunc(unsigned char key, int x, int y)
 {
@@ -128,7 +152,7 @@ void KeyboardFunc(unsigned char key, int x, int y)
 
 void Canvas::create(GLuint width, GLuint height, const std::string& title)
 {
-    static const GLfloat pointSize = 10.0f;
+    static const GLfloat pointSize = 4.0f;
     static const GLfloat lineWidth = 1.3f;
     static const GLfloat backColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
     _width = width;
@@ -148,7 +172,9 @@ void Canvas::create(GLuint width, GLuint height, const std::string& title)
     glutDisplayFunc(DisplayFunc);
     glutReshapeFunc(ReshapeFunc);
     glutKeyboardFunc(KeyboardFunc);
-    glutMouseFunc(MouseFunc);
+	glutMouseFunc(MouseFunc);
+	glutMotionFunc(MouseDrag);
+
     Canvas::SetInstance(this);
 }
 

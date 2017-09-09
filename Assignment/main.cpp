@@ -10,7 +10,7 @@ int main(int argc, char** argv)
     canvas->create(400, 400, "C++ Coding Challenge");
 	canvas->initGrid(20);
 	
-    // Run the GLUT event loop
+	// Run the GLUT event loop
     glutMainLoop();
 	
     return 0;

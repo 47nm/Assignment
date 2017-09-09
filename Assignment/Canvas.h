@@ -7,7 +7,6 @@
 #include "Grid.h"
 #include "SubjectAndObserver.h"
 
-
 //! Canvas represents a 2D window with built-in support for drawing points and circles, as well as
 //! receiving and processing window refresh, window resize, mouse input, and keyboard input events.
 //! The canvas coordinate system origin is located in the upper left hand corner with the X axis 
@@ -49,11 +48,14 @@ public:
 	//! \param width    New window width in pixels.
 	//! \param height   New window height in pixels.
 	void reshapeGrid(GLuint width, GLuint height);
+	//todo:comment
+	void onMouseDrag(int x, int y);
 
 	//! Access the singleton canvas instance.
     static Canvas& GetInstance();
 	void initGrid(int dots);
 	void drawGrid();
+	void drawLine();
 	
 protected:
     //! Default constructor, protected for singleton object.
@@ -93,6 +95,9 @@ protected:
     GLuint _height;
     static std::unique_ptr<Canvas> _instance;
 	SquareGrid squareGrid;
+	Line line;
+	int mouseClickState;
 };
+
 
 #endif // Canvas_h

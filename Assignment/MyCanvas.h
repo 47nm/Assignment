@@ -11,6 +11,8 @@ public:
     void display() override;
     void onKeyboard(unsigned char key, int x, int y) override;
     void onMouseButton(int button, int state, int x, int y) override;
+	
+	
 };
 
 #endif // MyCanvas_h
