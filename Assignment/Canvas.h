@@ -7,6 +7,7 @@
 #include "Grid.h"
 #include "SubjectAndObserver.h"
 
+
 //! Canvas represents a 2D window with built-in support for drawing points and circles, as well as
 //! receiving and processing window refresh, window resize, mouse input, and keyboard input events.
 //! The canvas coordinate system origin is located in the upper left hand corner with the X axis 
@@ -21,6 +22,10 @@ public:
     //! \param height   Initial canvas height in pixels.
     //! \param title    Canvas title string.
     void create(GLuint width, GLuint height, const std::string& title);
+
+	void createMenu();
+
+	void setMode(int);
 
 	void update(Subject *);
 
@@ -97,6 +102,8 @@ protected:
 	SquareGrid squareGrid;
 	Line line;
 	int mouseClickState;
+	problem mode;
+
 };
 
 

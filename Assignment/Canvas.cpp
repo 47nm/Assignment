@@ -10,6 +10,7 @@ Canvas::Canvas()
 , _height(0)
 {
 	mouseClickState = GLUT_UP;
+	mode = problem::problem1;
 }
 
 Canvas::~Canvas()
@@ -59,8 +60,6 @@ void Canvas::drawGrid() {
 			else {
 				color = squareGrid.colorForOn;
 			}
-			
-			
 			drawPoint(cell.x, cell.y, color.red, color.green, color.blue);
 		}
 	}
@@ -174,10 +173,28 @@ void Canvas::create(GLuint width, GLuint height, const std::string& title)
     glutKeyboardFunc(KeyboardFunc);
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MouseDrag);
-
+	
+	this->createMenu();
     Canvas::SetInstance(this);
+	
+}
+void Menu(int x) {
+	Canvas::GetInstance().setMode(x);
+
+}
+void Canvas::createMenu() {
+	
+	glutCreateMenu(Menu);
+	glutAddMenuEntry("Problem 1",  problem::problem1);
+	glutAddMenuEntry("Problem 2",  problem::problem2);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+
 }
 
+void Canvas::setMode(int x) {
+	mode = static_cast<problem>(x);
+	this->refresh();
+}
 void Canvas::update(Subject *obj) {
 	if (string(typeid(*obj).name()).compare("SquareGrid")) {
 		drawGrid();

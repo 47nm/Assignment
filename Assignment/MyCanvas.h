@@ -3,6 +3,9 @@
 
 #include "Canvas.h"
 
+
+
+
 class MyCanvas : public Canvas
 {
 public:

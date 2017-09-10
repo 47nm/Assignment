@@ -50,12 +50,12 @@ void SquareGrid::init(int _dots, GridPoint _start, GridPoint _end, Color& _color
 	gridPoints.resize(dots, vector<GridPoint>(dots));
 	GridPoint temp = start;
 	for (int i = 0; i < dots; i++) {
-		temp.x = start.x;
+		temp.y = start.y;
 		for (int j = 0; j < dots; j++) {
 			gridPoints[i][j] = temp;
-			temp.x = pitch + temp.x;
+			temp.y = pitch + temp.y;
 		}
-		temp.y = pitch + temp.y;
+		temp.x = pitch + temp.x;
 	}
 	
 }
@@ -81,13 +81,13 @@ void SquareGrid::reshape(GridPoint newStart, GridPoint newEnd)
 
 	GridPoint temp = start;
 	for (int i = 0; i < dots; i++) {
-		temp.x = start.x;
+		temp.y = start.y;
 		for (int j = 0; j < dots; j++) {
 			gridPoints[i][j].x = temp.x;
 			gridPoints[i][j].y = temp.y;
-			temp.x = pitch + temp.x;
+			temp.y = pitch + temp.y;
 		}
-		temp.y = pitch + temp.y;
+		temp.x = pitch + temp.x;
 	}
 	
 }

@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="GridUtil.cpp" />
+    <ClCompile Include="Util.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyCanvas.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridUtil.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="MyCanvas.h" />
     <ClInclude Include="SubjectAndObserver.h" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 #define Grid_h
 #include <iostream>
 #include <vector>
-#include "GridUtil.h"
+#include "Util.h"
 #include "SubjectAndObserver.h"
 using namespace std;
 
