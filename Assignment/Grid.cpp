@@ -11,6 +11,22 @@ SquareGrid::SquareGrid(int _dots, GridPoint _start, GridPoint _end, Color& _colo
 	
 }
 
+void SquareGrid::toggleGridPoint(Point p)
+{
+	int tempPitch = static_cast<int>(pitch);
+	float threshold = 4;//radius of point;
+	int indexOfX, indexOfY;
+	indexOfX = static_cast<int>(round((p.x - start.x) / pitch));
+	indexOfY = static_cast<int>(round((p.y - start.y) / pitch));
+
+	if (indexOfX < dots && indexOfY < dots && indexOfX >=0 && indexOfY >=0
+			&& this->gridPoints[indexOfX][indexOfY].distance(p) < threshold) {
+		this->gridPoints[indexOfX][indexOfY].toggle();
+		this->notifyObservers();
+	}
+
+}
+
 void SquareGrid::clearGrid() {
 	for (auto& row: gridPoints) {
 		for (auto& col: row) {

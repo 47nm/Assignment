@@ -18,7 +18,7 @@ public:
 
 	SquareGrid();
 	SquareGrid(int, GridPoint, GridPoint,  Color&, Color&);
-
+	void toggleGridPoint(Point);
 	void clearGrid();
 	void init(int, GridPoint, GridPoint, Color&, Color&);
 	void reshape(GridPoint, GridPoint);

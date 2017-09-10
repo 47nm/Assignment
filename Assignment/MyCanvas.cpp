@@ -1,7 +1,7 @@
 
 #include "MyCanvas.h"
 #include <iostream>
-#include "GridUtil.h"
+
 
 MyCanvas::MyCanvas()
 {
@@ -24,24 +24,14 @@ void MyCanvas::display()
 	// Draw a grid on the canvas
 	if (mode == problem::problem1) {
 		
-		drawLine();
-		int radius = line.length();
-		int radiusOfInnerCircle = 0.0, radiusOfOuterCircle = 0.0;
-		drawCircle(line.start.x, line.start.y, static_cast<GLuint>(radius), 127, 0, 0);
-		squareGrid.clearGrid();//clear last time drawn circles
-		if (this->mouseClickState == GLUT_UP) {
-			markNearestGridPointsToCircle(squareGrid, Circle(Point(line.start.x, line.start.y), radius), radiusOfInnerCircle, radiusOfOuterCircle);
-			if (radiusOfInnerCircle > 0.0 && radiusOfInnerCircle < radius*radius) {
-				drawCircle(line.start.x, line.start.y, static_cast<GLuint>(radiusOfInnerCircle), 0, 127, 0);
-			}
-			if (radiusOfOuterCircle > 0.0) {
-				drawCircle(line.start.x, line.start.y, static_cast<GLuint>(radiusOfOuterCircle), 0, 127, 0);
-			}
-		}
-		
+		drawLine(line);
+		drawCircle(actualCircle.center.x, actualCircle.center.y, static_cast<GLuint>(actualCircle.radius), 127, 0, 0);
+		drawCircle(innerCircle.center.x, innerCircle.center.y, static_cast<GLuint>(innerCircle.radius), 0, 127, 0);
+		drawCircle(outerCircle.center.x, outerCircle.center.y, static_cast<GLuint>(outerCircle.radius), 0, 127, 0);
 
 	}
 	else if (mode == problem::problem2) {
+
 		//select points, create a function for selection of point in grid class 
 		//if pressed g draw best fir circle 
 			//bestFirCircle(grid);
@@ -59,22 +49,28 @@ void MyCanvas::onMouseButton(int button, int state, int x, int y)
 {
 
     // Process mouse button events.
-    switch (button) {
-    case GLUT_LEFT_BUTTON:
-        std::cout << "Canvas::onMouseButton: " << state << ", " << x << ", " << y << std::endl;
-		switch (mouseClickState)
-		{
+	switch (button) {
+	case GLUT_LEFT_BUTTON:
+		std::cout << "Canvas::onMouseButton: " << state << ", " << x << ", " << y << std::endl;
+		switch (mode) {
+		case problem::problem1:
+			switch (mouseClickLastState)
+			{
 			case GLUT_UP:
 				switch (state)
 				{
-					case GLUT_DOWN:
-						line.start.x = x;
-						line.start.y = y;
-						mouseClickState = GLUT_DOWN;
-						break;
-					case GLUT_UP: // not possible
-					default:
-						break; 
+				case GLUT_DOWN:
+					line.start.x = x;
+					line.start.y = y;
+					line.end.x = x;
+					line.end.y = y;
+					squareGrid.clearGrid();
+					actualCircle.radius = innerCircle.radius = outerCircle.radius = 0;
+					mouseClickLastState = GLUT_DOWN;
+					
+					break;
+				case GLUT_UP: // not possible
+					break;
 				}
 			case GLUT_DOWN:
 				switch (state)
@@ -82,21 +78,25 @@ void MyCanvas::onMouseButton(int button, int state, int x, int y)
 				case GLUT_UP:
 					line.end.x = x;
 					line.end.y = y;
-					mouseClickState = GLUT_UP;
-					refresh();
+					mouseClickLastState = GLUT_UP;
+					drawNearestCircles(state);
+					
 					break;
 				case GLUT_DOWN: // not possible
-				default:
-					break; 
+					break;
 				}
-			default:
-				break;
+			}
+			break;
+		case problem::problem2:
+			if (state == GLUT_DOWN) {				
+				squareGrid.toggleGridPoint(Point(x, y));
+			}
+			break;
 		}
 
-    default:
-        break;
-    }
+	}
 	
+	refresh();
 }
 
 void MyCanvas::onKeyboard(unsigned char key, int x, int y)

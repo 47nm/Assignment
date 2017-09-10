@@ -9,7 +9,7 @@ Canvas::Canvas()
 : _width(0)
 , _height(0)
 {
-	mouseClickState = GLUT_UP;
+	mouseClickLastState = GLUT_UP;
 	mode = problem::problem1;
 }
 
@@ -38,6 +38,8 @@ void Canvas::drawPoint(GLint cx, GLint cy, GLubyte red, GLubyte green, GLubyte b
 
 void Canvas::drawCircle(GLint cx, GLint cy, GLuint radius, GLubyte red, GLubyte green, GLubyte blue)
 {
+	if ((float)radius < 0.4)//point size
+		return;
     static const int numSlices = 72;
     static const GLfloat deltaAngle = 2.0f * std::atan2f(0.0f, -1.0f) / numSlices;
     cy = _height - cy;
@@ -48,6 +50,21 @@ void Canvas::drawCircle(GLint cx, GLint cy, GLuint radius, GLubyte red, GLubyte 
         glVertex2f(cx + 0.5f + radius * std::cosf(angle), cy + 0.5f + radius * std::sinf(angle));
     }
     glEnd();
+}
+void Canvas::drawNearestCircles(int state) {
+	actualCircle.radius = line.length();
+	actualCircle.center = innerCircle.center = outerCircle.center = line.start;
+	int radiusOfInnerCircle = 0.0, radiusOfOuterCircle = 0.0;
+	
+	if (state == GLUT_UP && (float)actualCircle.radius > 0.4) {
+		markNearestGridPointsToCircle(squareGrid, Circle(Point(line.start.x, line.start.y), actualCircle.radius), radiusOfInnerCircle, radiusOfOuterCircle);
+		if (radiusOfInnerCircle > 0.0 && radiusOfInnerCircle < actualCircle.radius*actualCircle.radius) {
+			innerCircle.radius = radiusOfInnerCircle;
+		}
+		if (radiusOfOuterCircle > 0.0) {
+			outerCircle.radius = radiusOfOuterCircle;
+		}
+	}
 }
 //change this 
 void Canvas::drawGrid() {
@@ -65,7 +82,9 @@ void Canvas::drawGrid() {
 	}
 
 }
-void Canvas::drawLine() {
+void Canvas::drawLine(Line& line) {
+	if (line.length() < 1.0)
+		return;
 	glColor3ub(0, 127, 0);
 	glBegin(GL_LINES);
 	glVertex2i(line.start.x, _height - line.start.y);
@@ -105,13 +124,13 @@ void Canvas::reshapeGrid(GLuint width, GLuint height) {
 }
 void Canvas::onMouseDrag(int x, int y)
 {
-	if (mouseClickState == GLUT_DOWN)
+	if (mouseClickLastState == GLUT_DOWN)
 	{
 		line.end.x = x;
 		line.end.y = y;
+		drawNearestCircles(GLUT_DOWN);
 		refresh();
 	}
-	//cout << mouseClickState << "\n";
 }
 Canvas& Canvas::GetInstance()
 {
@@ -198,5 +217,6 @@ void Canvas::setMode(int x) {
 void Canvas::update(Subject *obj) {
 	if (string(typeid(*obj).name()).compare("SquareGrid")) {
 		drawGrid();
+		refresh();
 	}
 }

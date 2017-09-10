@@ -5,6 +5,7 @@
 #include <memory>
 #include "glut.h"
 #include "Grid.h"
+#include "GridUtil.h"
 #include "SubjectAndObserver.h"
 
 
@@ -60,7 +61,7 @@ public:
     static Canvas& GetInstance();
 	void initGrid(int dots);
 	void drawGrid();
-	void drawLine();
+	void drawLine(Line&);
 	
 protected:
     //! Default constructor, protected for singleton object.
@@ -91,6 +92,8 @@ protected:
     //! \param blue     Blue component of the RGB color (0-255).
     void drawCircle(GLint cx, GLint cy, GLuint radius, GLubyte red, GLubyte green, GLubyte blue);
 
+	void drawNearestCircles(int);
+
     //! Set the singleton canvas instance.
     static void SetInstance(Canvas* instance);
 
@@ -101,8 +104,10 @@ protected:
     static std::unique_ptr<Canvas> _instance;
 	SquareGrid squareGrid;
 	Line line;
-	int mouseClickState;
+	Circle actualCircle, outerCircle, innerCircle;
+	int mouseClickLastState;
 	problem mode;
+
 
 };
 
