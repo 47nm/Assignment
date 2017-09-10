@@ -16,12 +16,7 @@ void MyCanvas::display()
 {
     // Clear the canvas
     clear();
-    // -------------------------------------------------------------------------------------------
-    // Draw a gray point in the middle of the canvas
-    //drawPoint(_width / 2, _height / 2, 127, 127, 127);
-    // Draw a red circle on the canvas
-    //drawCircle(_width / 3, _height / 3, 50, 127, 0, 0);
-	// Draw a grid on the canvas
+
 	if (mode == problem::problem1) {
 		
 		drawLine(line);
@@ -32,10 +27,9 @@ void MyCanvas::display()
 	}
 	else if (mode == problem::problem2) {
 
-		//select points, create a function for selection of point in grid class 
-		//if pressed g draw best fir circle 
-			//bestFirCircle(grid);
-		//if pressed c clear grid
+		//draw best fit circle 
+		drawCircle(actualCircle.center.x, actualCircle.center.y, static_cast<GLuint>(actualCircle.radius), 127, 0, 0);
+		
 	}
 	
 	drawGrid();
@@ -107,7 +101,19 @@ void MyCanvas::onKeyboard(unsigned char key, int x, int y)
     case 27: // ESC
         exit(0);
         break;
-    default:
+    case 'G':
+	case 'g':
+		if (mode == problem::problem2) {
+			actualCircle = equateBestFitCircle(squareGrid);
+		}
+		break;
+	case 'C':
+	case 'c':
+		line.end.x = line.start.x;
+		line.end.y = line.start.y;
+		innerCircle.radius = outerCircle.radius = actualCircle.radius = 0;
+		squareGrid.clearGrid();
+	default:
         break;
     }
     refresh();

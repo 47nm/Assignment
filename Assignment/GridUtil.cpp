@@ -33,3 +33,59 @@ void markNearestGridPointsToCircle( SquareGrid& squareGrid,const Circle& circle,
 	squareGrid.notifyObservers();
 }
 
+Circle equateBestFitCircle(SquareGrid& squareGrid) {
+	const int maxIterations = 256;
+	const double tolerance = 1e-06;
+	double centerX=0.0, centerY=0.0, radius =0.0;
+	double xAvr = 0.0, yAvr = 0.0;
+	int countOfPoints =0;
+	vector<GridPoint> allpoints;
+	for (auto& row : squareGrid.gridPoints) {
+		for (auto& col : row) {
+			if (col.state == GridPoint::STATE_ON) {
+				xAvr += col.x;
+				yAvr += col.y;
+				countOfPoints++;
+				allpoints.push_back(col);
+			}
+		}
+	}
+	xAvr /= countOfPoints;
+	yAvr /= countOfPoints;
+	centerX = xAvr;
+	centerY = yAvr;
+
+	for (int j = 0; j < maxIterations; j++) {
+		/* update the iterates */
+		double a0 = centerX;
+		double b0 = centerY;
+
+		/* compute average L, dL/da, dL/db */
+		double LAvr = 0.0;
+		double LaAvr = 0.0;
+		double LbAvr = 0.0;
+
+		for (int i = 0; i < countOfPoints; i++) {
+			double dx = allpoints[i].x - centerX;
+			double dy = allpoints[i].y - centerY;
+			double L = sqrt(dx * dx + dy * dy);
+			if (fabs(L) > tolerance) {
+				LAvr += L;
+				LaAvr -= dx / L;
+				LbAvr -= dy / L;
+			}
+		}
+		LAvr /= countOfPoints;
+		LaAvr /= countOfPoints;
+		LbAvr /= countOfPoints;
+
+		centerX = xAvr + LAvr * LaAvr;
+		centerY = yAvr + LAvr * LbAvr;
+		radius = LAvr;
+
+		if (fabs(centerX - a0) <= tolerance && fabs(centerY - b0) <= tolerance)
+			break;
+	}
+
+	return Circle(Point(static_cast<int>(centerX), static_cast<int>(centerY)),radius);
+}
