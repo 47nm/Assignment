@@ -13,7 +13,6 @@ SquareGrid::SquareGrid(int _dots, GridPoint _start, GridPoint _end, Color& _colo
 
 void SquareGrid::toggleGridPoint(Point p)
 {
-	int tempPitch = static_cast<int>(pitch);
 	float threshold = 4;//radius of point;
 	int indexOfX, indexOfY;
 	indexOfX = static_cast<int>(round((p.x - start.x) / pitch));

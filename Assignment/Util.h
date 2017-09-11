@@ -76,7 +76,7 @@ public:
 	int radius;
 	Circle():radius(0){
 	}
-	Circle(Point& p, int r):center(p),radius(r) {
+	Circle(Point p, int r):center(p),radius(r) {
 	}
 
 };

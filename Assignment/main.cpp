@@ -10,8 +10,8 @@ int main(int argc, char** argv)
     // Create a canvas for the coding challenge
     MyCanvas* canvas = new MyCanvas();
 	//SquareGrid * squareGrid = new SquareGrid();
-    canvas->create(400, 400, "C++ Coding Challenge");
-	canvas->initGrid(20);
+    canvas->create(700, 700, "C++ Coding Challenge");
+	canvas->initGrid(40);
 	
 	// Run the GLUT event loop
     glutMainLoop();

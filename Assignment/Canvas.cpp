@@ -82,13 +82,13 @@ void Canvas::drawGrid() {
 	}
 
 }
-void Canvas::drawLine(Line& line) {
-	if (line.length() < 1.0)
+void Canvas::drawLine(Line& _line) {
+	if (_line.length() < 1.0)
 		return;
 	glColor3ub(0, 127, 0);
 	glBegin(GL_LINES);
-	glVertex2i(line.start.x, _height - line.start.y);
-	glVertex2i(line.end.x, _height - line.end.y);
+	glVertex2i(_line.start.x, _height - _line.start.y);
+	glVertex2i(_line.end.x, _height - _line.end.y);
 	glEnd();
 
 }

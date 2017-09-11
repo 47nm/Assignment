@@ -4,7 +4,7 @@
 # define M_PIl          3.141592653589793238462643383279502884L
 
 using namespace std;
-void markNearestGridPointsToCircle( SquareGrid& squareGrid,const Circle& circle, int &_radiusOfOuterCircle, int  &_radiusOfInnerCircle) {
+void markNearestGridPointsToCircle( SquareGrid& squareGrid,const Circle circle, int &_radiusOfOuterCircle, int  &_radiusOfInnerCircle) {
 	
 	Point pointOnCircle;
 	float thetaIncrement = (float)squareGrid.pitch/(circle.radius!=0?circle.radius:1)/2 ;
