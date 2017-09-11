@@ -6,11 +6,7 @@ class Subject;
 class Observer {
 public:
 	virtual void update(Subject*) = 0;
-	bool operator == (Observer &obj) {
-		if (this == &obj)
-			return true;
-		return false;
-	}
+
 	Observer() {}
 	~Observer() {};
 
@@ -22,6 +18,8 @@ public:
 
 class Subject {
 public:
+
+		
 		virtual void registerObserver(Observer *observer) = 0;
 
 		virtual void removeObserver(Observer *observer) = 0;
