@@ -53,7 +53,7 @@ public:
 	//! Receive window resize events.
 	//! \param width    New window width in pixels.
 	//! \param height   New window height in pixels.
-	void reshapeGrid(GLuint width, GLuint height);
+	void reshapeOtherProperties(GLuint width, GLuint height);
 	//todo:comment
 	void onMouseDrag(int x, int y);
 
@@ -61,7 +61,7 @@ public:
     static Canvas& GetInstance();
 	void initGrid(int dots);
 	void drawGrid();
-	void drawLine(Line&);
+	void drawLine(Line&, GLubyte red, GLubyte green, GLubyte blue);
 	
 protected:
     //! Default constructor, protected for singleton object.
@@ -107,7 +107,7 @@ protected:
 	Circle actualCircle, outerCircle, innerCircle;
 	int mouseClickLastState;
 	problem mode;
-
+	Color colorOfline, colorOfactualCircle, colorOfOuterAndInnerCircle;
 
 };
 

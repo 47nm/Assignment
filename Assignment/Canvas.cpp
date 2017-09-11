@@ -82,10 +82,11 @@ void Canvas::drawGrid() {
 	}
 
 }
-void Canvas::drawLine(Line& _line) {
+void Canvas::drawLine(Line & _line, GLubyte red, GLubyte green, GLubyte blue)
+{
 	if (_line.length() < 1.0)
 		return;
-	glColor3ub(0, 127, 0);
+	glColor3ub(red, green, blue);
 	glBegin(GL_LINES);
 	glVertex2i(_line.start.x, _height - _line.start.y);
 	glVertex2i(_line.end.x, _height - _line.end.y);
@@ -117,9 +118,17 @@ void Canvas::reshape(GLuint width, GLuint height)
     glLoadIdentity();
 }
 
-void Canvas::reshapeGrid(GLuint width, GLuint height) {
+void Canvas::reshapeOtherProperties(GLuint width, GLuint height) {
+	
 	squareGrid.reshape(GridPoint(GridPoint::STATE_OFF, 0, 0),
 		GridPoint(GridPoint::STATE_OFF, width, height));
+	//currently clearing other objects, draw them again after resize.
+	//Instead of below code scaling can be applied for resizing.
+	line.end.x = line.start.x;
+	line.end.y = line.start.y;
+	innerCircle.radius = outerCircle.radius = actualCircle.radius = 0;
+	squareGrid.clearGrid();
+
 	squareGrid.notifyObservers();
 }
 void Canvas::onMouseDrag(int x, int y)
@@ -150,7 +159,7 @@ void DisplayFunc()
 void ReshapeFunc(int width, int height)
 {
     Canvas::GetInstance().reshape(width, height);
-	Canvas::GetInstance().reshapeGrid(width, height);
+	Canvas::GetInstance().reshapeOtherProperties(width, height);
 }
 
 void MouseFunc(int button, int state, int x, int y)

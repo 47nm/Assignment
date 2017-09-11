@@ -5,6 +5,9 @@
 
 MyCanvas::MyCanvas()
 {
+	colorOfline = Color(0,127,0);
+	colorOfactualCircle = Color(44, 15, 15);
+	colorOfOuterAndInnerCircle = Color(127,0,0);
 }
 
 MyCanvas::~MyCanvas()
@@ -19,16 +22,16 @@ void MyCanvas::display()
 
 	if (mode == problem::problem1) {
 		
-		drawLine(line);
-		drawCircle(actualCircle.center.x, actualCircle.center.y, static_cast<GLuint>(actualCircle.radius), 127, 0, 0);
-		drawCircle(innerCircle.center.x, innerCircle.center.y, static_cast<GLuint>(innerCircle.radius), 0, 127, 0);
-		drawCircle(outerCircle.center.x, outerCircle.center.y, static_cast<GLuint>(outerCircle.radius), 0, 127, 0);
+		drawLine(line, colorOfline.red, colorOfline.green, colorOfline.blue);
+		drawCircle(actualCircle.center.x, actualCircle.center.y, static_cast<GLuint>(actualCircle.radius), colorOfactualCircle.red, colorOfactualCircle.green, colorOfactualCircle.blue);
+		drawCircle(innerCircle.center.x, innerCircle.center.y, static_cast<GLuint>(innerCircle.radius), colorOfOuterAndInnerCircle.red, colorOfOuterAndInnerCircle.green, colorOfOuterAndInnerCircle.blue);
+		drawCircle(outerCircle.center.x, outerCircle.center.y, static_cast<GLuint>(outerCircle.radius), colorOfOuterAndInnerCircle.red, colorOfOuterAndInnerCircle.green, colorOfOuterAndInnerCircle.blue);
 
 	}
 	else if (mode == problem::problem2) {
 
 		//draw best fit circle 
-		drawCircle(actualCircle.center.x, actualCircle.center.y, static_cast<GLuint>(actualCircle.radius), 127, 0, 0);
+		drawCircle(actualCircle.center.x, actualCircle.center.y, static_cast<GLuint>(actualCircle.radius), colorOfactualCircle.red, colorOfactualCircle.green, colorOfactualCircle.blue);
 		
 	}
 	
