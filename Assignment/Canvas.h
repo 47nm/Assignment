@@ -23,12 +23,14 @@ public:
     //! \param height   Initial canvas height in pixels.
     //! \param title    Canvas title string.
     void create(GLuint width, GLuint height, const std::string& title);
-
+	//! Creates a Menu 
 	void createMenu();
-
+	//! Sets the mode of the canvas
+	//! \param enum Problem change mode 
 	void setMode(int);
-
-	void update(Subject *);
+	//! updates the subject like SquareGrid on required locations e.g. canvas window
+	//! \param Subject Observable object like SquareGrid that needs to refreshed on screen 
+	void update(Subject *) override;
 
 	
 	
@@ -54,7 +56,9 @@ public:
 	//! \param width    New window width in pixels.
 	//! \param height   New window height in pixels.
 	void reshapeOtherProperties(GLuint width, GLuint height);
-	//todo:comment
+	//! Receive and process mouse input drag.
+	//! \param x        Mouse X coordinate in pixels.
+	//! \param y        Mouse Y coordinate in pixels.
 	void onMouseDrag(int x, int y);
 
 	//! Access the singleton canvas instance.

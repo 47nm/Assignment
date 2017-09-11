@@ -224,7 +224,7 @@ void Canvas::setMode(int x) {
 	mode = static_cast<problem>(x);
 	this->refresh();
 }
-void Canvas::update(Subject *obj) {
+void Canvas::update(Subject *obj)  {
 	if (string(typeid(*obj).name()).compare("SquareGrid")) {
 		drawGrid();
 		refresh();

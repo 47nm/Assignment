@@ -5,13 +5,18 @@
 
 using namespace std;
 void markNearestGridPointsToCircle( SquareGrid* squareGrid,const Circle circle, int &_radiusOfOuterCircle, int  &_radiusOfInnerCircle) {
-	if (squareGrid == NULL)
+
+	//if squareGrid is null, then error should be thrown, but currently handling gracefully
+	if (squareGrid == NULL){
+		_radiusOfOuterCircle = _radiusOfInnerCircle = 0;
 		return;
+	}
+	
 	Point pointOnCircle;
 	float thetaIncrement = (float)squareGrid->pitch/(circle.radius!=0?circle.radius:1)/2 ;
 	double radiusOfOuterCircle = 0.0,radiusOfInnerCircle = DBL_MAX;
 	double temp=0.0 ;
-	
+	// for each(at a certain interval) point on circumference. find the nearest grid point.
 	for (float theta = 0; theta < 2 * M_PIl; theta += thetaIncrement) {
 		int indexOfX, indexOfY;
 		pointOnCircle.x = circle.center.x + circle.radius*cos(theta);
@@ -31,19 +36,22 @@ void markNearestGridPointsToCircle( SquareGrid* squareGrid,const Circle circle, 
 	}
 	_radiusOfOuterCircle = static_cast<int>(sqrt(radiusOfOuterCircle));
 	_radiusOfInnerCircle = static_cast<int>(sqrt(radiusOfInnerCircle));
+	//since grid has been changed, notify the observers to show it on display.
 	squareGrid->notifyObservers();
 }
 
 Circle equateBestFitCircle(SquareGrid* squareGrid) {
-
+	
 	const int maxIterations = 256;
 	const double tolerance = 1e-06;
 	double centerX=0.0, centerY=0.0, radius =0.0;
 	double xAvr = 0.0, yAvr = 0.0;
 	int countOfPoints =0;
 	vector<GridPoint> allpoints;
+	//if squareGrid is null, then error should be thrown, but currently handling gracefully
 	if (squareGrid == NULL)
 		return Circle();
+	//taking average of all Xs, and Ys for initial guess
 	for (auto& row : squareGrid->gridPoints) {
 		for (auto& col : row) {
 			if (col.state == GridPoint::STATE_ON) {
@@ -59,10 +67,12 @@ Circle equateBestFitCircle(SquareGrid* squareGrid) {
 	centerX = xAvr;
 	centerY = yAvr;
 
+
+	//multiple iteration for least square best fit algo to calculate center and radius 
 	for (int j = 0; j < maxIterations; j++) {
 		/* update the iterates */
-		double a0 = centerX;
-		double b0 = centerY;
+		double tempX = centerX;
+		double tempY = centerY;
 
 		/* compute average L, dL/da, dL/db */
 		double LAvr = 0.0;
@@ -87,7 +97,7 @@ Circle equateBestFitCircle(SquareGrid* squareGrid) {
 		centerY = yAvr + LAvr * LbAvr;
 		radius = LAvr;
 
-		if (fabs(centerX - a0) <= tolerance && fabs(centerY - b0) <= tolerance)
+		if (fabs(centerX - tempX) <= tolerance && fabs(centerY - tempY) <= tolerance)
 			break;
 	}
 

@@ -107,12 +107,14 @@ void MyCanvas::onKeyboard(unsigned char key, int x, int y)
         break;
     case 'G':
 	case 'g':
+		//equate the best fit circle
 		if (mode == problem::problem2) {
 			actualCircle = equateBestFitCircle(squareGrid);
 		}
 		break;
 	case 'C':
 	case 'c':
+		//clear the screen
 		line.end.x = line.start.x;
 		line.end.y = line.start.y;
 		innerCircle.radius = outerCircle.radius = actualCircle.radius = 0;
