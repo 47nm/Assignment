@@ -15,9 +15,11 @@ public:
 	Color colorForOn, colorForOff;
 	vector<Observer*> observers;
 	vector<vector<GridPoint>> gridPoints;
+	static SquareGrid* squareGrid;
+	
+	static SquareGrid* getInstance();
+	static SquareGrid* getInstance(int, GridPoint, GridPoint, Color&, Color&);
 
-	SquareGrid();
-	SquareGrid(int, GridPoint, GridPoint,  Color&, Color&);
 	void toggleGridPoint(Point);
 	void clearGrid();
 	void init(int, GridPoint, GridPoint, Color&, Color&);
@@ -25,6 +27,12 @@ public:
 	void notifyObservers();
 	void registerObserver(Observer*);
 	void removeObserver(Observer*);
+	~SquareGrid();
+private:
+	
+	SquareGrid();
+	SquareGrid(int, GridPoint, GridPoint, Color&, Color&);
+
 };
 
 #endif

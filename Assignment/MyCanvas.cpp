@@ -5,6 +5,7 @@
 
 MyCanvas::MyCanvas()
 {
+	squareGrid = SquareGrid::getInstance();
 	colorOfline = Color(0,127,0);
 	colorOfactualCircle = Color(44, 15, 15);
 	colorOfOuterAndInnerCircle = Color(127,0,0);
@@ -61,7 +62,7 @@ void MyCanvas::onMouseButton(int button, int state, int x, int y)
 					line.start.y = y;
 					line.end.x = x;
 					line.end.y = y;
-					squareGrid.clearGrid();
+					squareGrid->clearGrid();
 					actualCircle.radius = innerCircle.radius = outerCircle.radius = 0;
 					mouseClickLastState = GLUT_DOWN;
 					
@@ -86,7 +87,7 @@ void MyCanvas::onMouseButton(int button, int state, int x, int y)
 			break;
 		case problem::problem2:
 			if (state == GLUT_DOWN) {				
-				squareGrid.toggleGridPoint(Point(x, y));
+				squareGrid->toggleGridPoint(Point(x, y));
 			}
 			break;
 		}
@@ -115,7 +116,7 @@ void MyCanvas::onKeyboard(unsigned char key, int x, int y)
 		line.end.x = line.start.x;
 		line.end.y = line.start.y;
 		innerCircle.radius = outerCircle.radius = actualCircle.radius = 0;
-		squareGrid.clearGrid();
+		squareGrid->clearGrid();
 	default:
         break;
     }

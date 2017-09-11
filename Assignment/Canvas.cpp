@@ -9,6 +9,7 @@ Canvas::Canvas()
 : _width(0)
 , _height(0)
 {
+	
 	mouseClickLastState = GLUT_UP;
 	mode = problem::problem1;
 }
@@ -69,13 +70,13 @@ void Canvas::drawNearestCircles(int state) {
 //change this 
 void Canvas::drawGrid() {
 	Color color;
-	for (auto row : squareGrid.gridPoints) {
+	for (auto row : squareGrid->gridPoints) {
 		for(auto cell: row){
 			if (cell.state == GridPoint::STATE_OFF) {
-				color = squareGrid.colorForOff;
+				color = squareGrid->colorForOff;
 			}
 			else {
-				color = squareGrid.colorForOn;
+				color = squareGrid->colorForOn;
 			}
 			drawPoint(cell.x, cell.y, color.red, color.green, color.blue);
 		}
@@ -96,9 +97,9 @@ void Canvas::drawLine(Line & _line, GLubyte red, GLubyte green, GLubyte blue)
 void Canvas::initGrid(int dots) {
 	Color colorForOff(127, 127, 127);
 	Color colorForOn(0, 0, 127);
-	squareGrid.init(dots, GridPoint(GridPoint::STATE_OFF, 0, 0), 
+	squareGrid->init(dots, GridPoint(GridPoint::STATE_OFF, 0, 0), 
 		GridPoint(GridPoint::STATE_OFF, _width, _height), colorForOn, colorForOff);
-	squareGrid.registerObserver(this);
+	squareGrid->registerObserver(this);
 	
 }
 void Canvas::refresh()
@@ -120,16 +121,16 @@ void Canvas::reshape(GLuint width, GLuint height)
 
 void Canvas::reshapeOtherProperties(GLuint width, GLuint height) {
 	
-	squareGrid.reshape(GridPoint(GridPoint::STATE_OFF, 0, 0),
+	squareGrid->reshape(GridPoint(GridPoint::STATE_OFF, 0, 0),
 		GridPoint(GridPoint::STATE_OFF, width, height));
 	//currently clearing other objects, draw them again after resize.
 	//Instead of below code scaling can be applied for resizing.
 	line.end.x = line.start.x;
 	line.end.y = line.start.y;
 	innerCircle.radius = outerCircle.radius = actualCircle.radius = 0;
-	squareGrid.clearGrid();
+	squareGrid->clearGrid();
 
-	squareGrid.notifyObservers();
+	squareGrid->notifyObservers();
 }
 void Canvas::onMouseDrag(int x, int y)
 {

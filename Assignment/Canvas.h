@@ -102,7 +102,7 @@ protected:
     GLuint _width;
     GLuint _height;
     static std::unique_ptr<Canvas> _instance;
-	SquareGrid squareGrid;
+	SquareGrid *squareGrid;
 	Line line;
 	Circle actualCircle, outerCircle, innerCircle;
 	int mouseClickLastState;

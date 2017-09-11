@@ -1,7 +1,11 @@
-#include "Grid.h"
 #include <algorithm>
+#include <memory>
+#include "Grid.h"
+using namespace std;
 
-SquareGrid ::SquareGrid(): gridPoints(NULL), start(), end(){
+SquareGrid *SquareGrid::squareGrid = nullptr;
+
+SquareGrid::SquareGrid(): gridPoints(NULL), start(), end(){
 	dots = 0;
 	pitch = 0.0;
 	
@@ -10,6 +14,24 @@ SquareGrid::SquareGrid(int _dots, GridPoint _start, GridPoint _end, Color& _colo
 	init(_dots, _start, _end, _colorForOn, _colorForOff);
 	
 }
+
+SquareGrid* SquareGrid::getInstance()
+{
+	if (squareGrid == nullptr) {
+		squareGrid = new SquareGrid();
+	}
+	return squareGrid;
+}
+
+SquareGrid* SquareGrid::getInstance(int _dots, GridPoint _start, GridPoint _end, Color& _colorForOn, Color& _colorForOff)
+{
+	if (squareGrid == nullptr) {
+		squareGrid = new SquareGrid(_dots, _start, _end, _colorForOn, _colorForOff);
+	}
+	return squareGrid;
+}
+
+
 
 void SquareGrid::toggleGridPoint(Point p)
 {
@@ -137,4 +159,9 @@ void SquareGrid::removeObserver(Observer* observer)
 	if (removeIndex != -1) {
 		observers.erase(observers.begin()+ removeIndex);
 	}
+}
+
+SquareGrid::~SquareGrid()
+{
+	delete squareGrid;
 }
